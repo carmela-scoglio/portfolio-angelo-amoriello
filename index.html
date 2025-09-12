@@ -420,19 +420,17 @@ I have strong expertise in Operations Research, including linear and non-linear 
           <!-- Contact Form -->
           <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800">
             <form class="space-y-6" name="contact" method="POST" data-netlify="true">
-              <input
-                  type="text"
-                  name="form-name"
-                  value="contact"
-                  hidden
-                />
+              <input type="hidden" name="form-name" value="contact" />
+
               <div>
                 <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name</label>
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
                   placeholder="Your Name"
+                  required
                 />
               </div>
 
@@ -441,8 +439,10 @@ I have strong expertise in Operations Research, including linear and non-linear 
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
                   placeholder="your@email.com"
+                  required
                 />
               </div>
 
@@ -450,9 +450,11 @@ I have strong expertise in Operations Research, including linear and non-linear 
                 <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
                 <textarea
                   id="message"
+                  name="message"
                   rows="4"
                   class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
                   placeholder="Tell me about your project..."
+                  required
                 ></textarea>
               </div>
 
@@ -463,6 +465,14 @@ I have strong expertise in Operations Research, including linear and non-linear 
                 Send Message
               </button>
             </form>
+            
+            <!-- Messaggio di conferma -->
+            <div id="form-success" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div class="bg-green-600 text-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+                <p>Thank you! Your message has been sent.</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

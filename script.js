@@ -208,3 +208,42 @@ function debounce(func, wait, immediate) {
     if (callNow) func.apply(context, args);
   };
 }
+
+contactForm.addEventListener('submit', function(e) {
+  let isValid = true;
+
+  inputs.forEach(input => {
+    if (!validateField(input)) {
+      isValid = false;
+    }
+  });
+
+  if (!isValid) {
+    e.preventDefault();
+    const firstError = contactForm.querySelector('.error');
+    if (firstError) firstError.focus();
+  } else {
+    // Mostra il messaggio di conferma
+    e.preventDefault(); // evita reload per test locale
+    const successBox = document.getElementById('form-success');
+    successBox.classList.remove('hidden');
+
+    // Invio reale a Netlify
+    const formData = new FormData(contactForm);
+    fetch('/', {
+      method: 'POST',
+      body: formData
+    }).then(() => {
+      // Reset form dopo invio
+      contactForm.reset();
+    }).catch(err => console.error(err));
+  }
+});
+
+// Chiudi il box cliccando fuori
+const successBox = document.getElementById('form-success');
+successBox.addEventListener('click', function(e) {
+  if (e.target === successBox) {
+    successBox.classList.add('hidden');
+  }
+});
