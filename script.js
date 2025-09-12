@@ -75,29 +75,18 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Submit form con fetch e popup
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+    contactForm.addEventListener('submit', function() {
+      // Delay minimo per permettere al submit di partire
+      setTimeout(() => {
+        successBox.classList.remove('hidden');
+        contactForm.reset();
 
-      let isValid = true;
-      inputs.forEach(input => {
-        if (!validateField(input)) isValid = false;
-      });
+        // Chiudi automaticamente il popup dopo 4 secondi
+        setTimeout(() => {
+          successBox.classList.add('hidden');
+        }, 4000);
 
-      if (!isValid) {
-        const firstError = contactForm.querySelector('.error');
-        if (firstError) firstError.focus();
-        return;
-      }
-
-      // Invio dati a Netlify
-      const formData = new FormData(contactForm);
-      fetch('/', { method: 'POST', body: formData })
-        .then(() => {
-          contactForm.reset();
-          successBox.classList.remove('hidden');
-        })
-        .catch(err => console.error(err));
+      }, 50);
     });
 
     // Chiudi popup cliccando fuori
@@ -105,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.target === successBox) successBox.classList.add('hidden');
     });
   }
+
 
   // --------------------------
   // Navbar background on scroll
