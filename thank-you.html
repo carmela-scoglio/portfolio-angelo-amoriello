@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You!</title>
-  <style>
-    body {
-      background-color: #111827; /* bg-neutral-900 */
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: #22c55e; /* green-500 */
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-    a {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background-color: #22c55e;
-      color: #fff;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    a:hover {
-      background-color: #16a34a;
-    }
-  </style>
-</head>
-<body>
-  <h1>Thank You!</h1>
-  <p>Your message has been successfully sent. We will get back to you shortly.</p>
-  <a href="/">Go Back to Home</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You | Angelo Amoriello</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="bg-black text-gray-200 font-sans">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-black/30 backdrop-blur-lg z-50 border-b border-neutral-800">
+      <div class="max-w-6xl mx-auto flex justify-between items-center px-6 py-4">
+        <div class="text-xl font-bold text-white">Angelo Amoriello</div>
+        <div class="space-x-6 hidden md:flex">
+          <a href="/#about" class="hover:text-[#2ea043]">About</a>
+          <a href="/#projects" class="hover:text-[#2ea043]">Projects</a>
+          <a href="/#skills" class="hover:text-[#2ea043]">Skills</a>
+          <a href="/#education" class="hover:text-[#2ea043]">Education</a>
+          <a href="/#experience" class="hover:text-[#2ea043]">Experience</a>
+          <a href="/#contact" class="hover:text-[#2ea043]">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Thank You Message -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
+      <div class="bg-neutral-900 p-12 rounded-2xl border border-neutral-800 max-w-lg">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-[#22c55e]">Thank You!</h1>
+        <p class="text-gray-300 mb-6">
+          Your message has been successfully sent. I will get back to you shortly.
+        </p>
+        <a href="/" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all transform hover:scale-105">
+          Back to Home
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-6 text-center text-gray-500">
+      <div>© 2025 Angelo Amoriello. All rights reserved.</div>
+      <div class="flex justify-center gap-6 mt-2">
+        <a href="https://github.com/angeloamoriello" target="_blank" class="hover:text-[#2ea043]">GitHub</a>
+        <a href="https://www.linkedin.com/in/angelo-amoriello" target="_blank" class="hover:text-[#2ea043]">LinkedIn</a>
+        <a href="mailto:aamoriello0996@gmail.com" class="hover:text-[#2ea043]">aamoriello0996@gmail.com</a>
+      </div>
+    </footer>
+
+  </body>
 </html>

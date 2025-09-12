@@ -75,24 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    contactForm.addEventListener('submit', function() {
-      // Delay minimo per permettere al submit di partire
-      setTimeout(() => {
-        successBox.classList.remove('hidden');
-        contactForm.reset();
-
-        // Chiudi automaticamente il popup dopo 4 secondi
-        setTimeout(() => {
-          successBox.classList.add('hidden');
-        }, 4000);
-
-      }, 50);
-    });
-
-    // Chiudi popup cliccando fuori
-    successBox.addEventListener('click', function(e) {
-      if (e.target === successBox) successBox.classList.add('hidden');
-    });
   }
 
 
