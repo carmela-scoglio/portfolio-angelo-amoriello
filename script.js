@@ -1,20 +1,17 @@
-// Mobile menu toggle functionality
 document.addEventListener('DOMContentLoaded', function() {
-  
+  // --------------------------
   // Mobile menu toggle
+  // --------------------------
   const menuBtn = document.getElementById('menu-btn');
   const mobileMenu = document.querySelector('.mobile-menu');
-  
+
   if (menuBtn && mobileMenu) {
     menuBtn.addEventListener('click', function() {
       mobileMenu.classList.toggle('hidden');
-      
-      // Aggiungi animazione ARIA per accessibilità
       const isOpen = !mobileMenu.classList.contains('hidden');
       menuBtn.setAttribute('aria-expanded', isOpen);
     });
 
-    // Chiudi il menu mobile quando si clicca su un link
     const mobileLinks = mobileMenu.querySelectorAll('a');
     mobileLinks.forEach(link => {
       link.addEventListener('click', function() {
@@ -24,129 +21,110 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Smooth scrolling per i link di navigazione (fallback per browser che non supportano CSS scroll-behavior)
+  // --------------------------
+  // Smooth scrolling
+  // --------------------------
   const navLinks = document.querySelectorAll('a[href^="#"]');
-  
   navLinks.forEach(link => {
     link.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
       const targetSection = document.querySelector(targetId);
-      
       if (targetSection) {
         e.preventDefault();
-        
-        const offsetTop = targetSection.offsetTop - 80; // Account for fixed navbar
-        
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth'
-        });
+        const offsetTop = targetSection.offsetTop - 80;
+        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
       }
     });
   });
 
-  // Contact form enhancement
+  // --------------------------
+  // Contact form
+  // --------------------------
   const contactForm = document.querySelector('form[name="contact"]');
-  
-  if (contactForm) {
-    // Basic form validation enhancement
-    const inputs = contactForm.querySelectorAll('input, textarea');
-    
-    inputs.forEach(input => {
-      // Real-time validation feedback
-      input.addEventListener('blur', function() {
-        validateField(this);
-      });
+  const successBox = document.getElementById('form-success');
 
-      input.addEventListener('input', function() {
-        // Remove error styling when user starts typing
-        if (this.classList.contains('error')) {
-          this.classList.remove('error');
-        }
-      });
-    });
-
-    contactForm.addEventListener('submit', function(e) {
-      let isValid = true;
-      
-      inputs.forEach(input => {
-        if (!validateField(input)) {
-          isValid = false;
-        }
-      });
-
-      if (!isValid) {
-        e.preventDefault();
-        
-        // Focus sul primo campo con errore
-        const firstError = contactForm.querySelector('.error');
-        if (firstError) {
-          firstError.focus();
-        }
-      }
-    });
-  }
-
-  // Function per validare i campi del form
   function validateField(field) {
     const value = field.value.trim();
     let isValid = true;
-    
-    // Remove previous error styling
     field.classList.remove('error');
-    
-    // Check required fields
-    if (field.hasAttribute('required') && !value) {
-      isValid = false;
-    }
-    
-    // Check email format
+    field.style.borderColor = '';
+
+    if (field.required && !value) isValid = false;
     if (field.type === 'email' && value) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) {
-        isValid = false;
-      }
+      if (!emailRegex.test(value)) isValid = false;
     }
-    
-    // Add error styling if invalid
+
     if (!isValid) {
       field.classList.add('error');
-      field.style.borderColor = '#ef4444'; // red-500
-    } else {
-      field.style.borderColor = ''; // Reset to default
+      field.style.borderColor = '#ef4444';
     }
-    
     return isValid;
   }
 
+  if (contactForm) {
+    const inputs = contactForm.querySelectorAll('input, textarea');
+
+    // Validazione in tempo reale
+    inputs.forEach(input => {
+      input.addEventListener('blur', function() {
+        validateField(this);
+      });
+      input.addEventListener('input', function() {
+        if (this.classList.contains('error')) this.classList.remove('error');
+      });
+    });
+
+    // Submit form con fetch e popup
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      let isValid = true;
+      inputs.forEach(input => {
+        if (!validateField(input)) isValid = false;
+      });
+
+      if (!isValid) {
+        const firstError = contactForm.querySelector('.error');
+        if (firstError) firstError.focus();
+        return;
+      }
+
+      // Invio dati a Netlify
+      const formData = new FormData(contactForm);
+      fetch('/', { method: 'POST', body: formData })
+        .then(() => {
+          contactForm.reset();
+          successBox.classList.remove('hidden');
+        })
+        .catch(err => console.error(err));
+    });
+
+    // Chiudi popup cliccando fuori
+    successBox.addEventListener('click', function(e) {
+      if (e.target === successBox) successBox.classList.add('hidden');
+    });
+  }
+
+  // --------------------------
   // Navbar background on scroll
+  // --------------------------
   const navbar = document.querySelector('nav');
   let lastScrollY = window.scrollY;
 
   window.addEventListener('scroll', function() {
     const currentScrollY = window.scrollY;
-    
     if (navbar) {
-      if (currentScrollY > 100) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-      
-      // // Optional: Hide/show navbar on scroll
-      // if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      //   navbar.style.transform = 'translateY(-100%)';
-      // } else {
-      //   navbar.style.transform = 'translateY(0)';
-      // }
+      if (currentScrollY > 100) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
     }
-    
     lastScrollY = currentScrollY;
   });
 
-  // Lazy loading per le immagini (se necessario)
+  // --------------------------
+  // Lazy loading immagini
+  // --------------------------
   const images = document.querySelectorAll('img[data-src]');
-  
   if (images.length > 0) {
     const imageObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
@@ -158,13 +136,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     });
-
     images.forEach(img => imageObserver.observe(img));
   }
 
-  // Keyboard navigation enhancement
+  // --------------------------
+  // Keyboard navigation
+  // --------------------------
   document.addEventListener('keydown', function(e) {
-    // ESC per chiudere il menu mobile
     if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
       mobileMenu.classList.add('hidden');
       menuBtn.setAttribute('aria-expanded', 'false');
@@ -172,78 +150,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Performance optimization: Throttle scroll events
+  // --------------------------
+  // Performance scroll throttle
+  // --------------------------
   let ticking = false;
-  
-  function updateOnScroll() {
-    // Qui puoi aggiungere altre funzioni che devono essere eseguite durante lo scroll
-    ticking = false;
-  }
-  
-  function requestTick() {
-    if (!ticking) {
-      requestAnimationFrame(updateOnScroll);
-      ticking = true;
-    }
-  }
-  
-  // Uncomment if you need optimized scroll handling
-  // window.addEventListener('scroll', requestTick);
-
-});
-
-// Utility function per debounce
-function debounce(func, wait, immediate) {
-  let timeout;
-  return function executedFunction() {
-    const context = this;
-    const args = arguments;
-    const later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-}
-
-contactForm.addEventListener('submit', function(e) {
-  let isValid = true;
-
-  inputs.forEach(input => {
-    if (!validateField(input)) {
-      isValid = false;
-    }
-  });
-
-  if (!isValid) {
-    e.preventDefault();
-    const firstError = contactForm.querySelector('.error');
-    if (firstError) firstError.focus();
-  } else {
-    // Mostra il messaggio di conferma
-    e.preventDefault(); // evita reload per test locale
-    const successBox = document.getElementById('form-success');
-    successBox.classList.remove('hidden');
-
-    // Invio reale a Netlify
-    const formData = new FormData(contactForm);
-    fetch('/', {
-      method: 'POST',
-      body: formData
-    }).then(() => {
-      // Reset form dopo invio
-      contactForm.reset();
-    }).catch(err => console.error(err));
-  }
-});
-
-// Chiudi il box cliccando fuori
-const successBox = document.getElementById('form-success');
-successBox.addEventListener('click', function(e) {
-  if (e.target === successBox) {
-    successBox.classList.add('hidden');
-  }
+  function updateOnScroll() { ticking = false; }
+  function requestTick() { if (!ticking) { requestAnimationFrame(updateOnScroll); ticking = true; } }
 });
